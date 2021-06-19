@@ -1,0 +1,25 @@
+{
+  "name": "docker-node-deploy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "Amitoj Singh",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/collection": "^0.1.6",
+    "docker-compose": "^0.23.12",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "simple-git": "^2.39.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "@types/node": "^15.12.2"
+  }
+}
