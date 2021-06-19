@@ -77,4 +77,12 @@ export class ContainerManager {
         this._containers.set(id, container);
         return container;
     }
+
+    async deleteContainer(id: string) {
+        const container = this.getContainer(id)
+        if (!container) return;
+        await this.stopContainer(id);
+        fs.unlinkSync(container.path);
+        return this._containers.delete(id);
+    }
 }

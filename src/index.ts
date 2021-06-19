@@ -42,6 +42,16 @@ app.post('/container/:ID/build', async (req, res) => {
     res.send({ success: true })
 })
 
+app.post('/container/:ID/pull', async (req, res) => {
+    await containerManager.pullContainer(req.params.ID)
+    res.send({ success: true })
+})
+
+app.post('/container/:ID/delete', async (req, res) => {
+    await containerManager.deleteContainer(req.params.ID)
+    res.send({ success: true })
+})
+
 
 httpServer.listen(port, () => {
     console.log(`listening on http://localhost:${port}`);
