@@ -48,8 +48,7 @@ app.post('/container/:ID/pull', async (req, res) => {
 })
 
 app.post('/container/:ID/delete', async (req, res) => {
-    await containerManager.deleteContainer(req.params.ID)
-    res.send({ success: true })
+    res.send({ success: await containerManager.deleteContainer(req.params.ID) })
 })
 
 
