@@ -14,7 +14,7 @@ const containerManager = new ContainerManager();
 app.use(express.json())
 
 app.post('/deploy', async (req, res) => {
-    const container = await containerManager.createContainer(req.body.url, req.body.branch)
+    const container = await containerManager.createContainer(req.body.url, req.body.branch, req.body.environmentVariables)
     if (!container) res.send({ success: false, data: { error: "Failed to initialize container" } })
     else res.send({ success: true, data: { id: container.id, startTime: container.startTime } })
 })

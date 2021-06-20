@@ -1,10 +1,11 @@
 import Collection from "@discordjs/collection";
 import { gitP } from 'simple-git';
 import { SimpleGit } from "simple-git/promise";
-import { randomString } from "../util";
+import { makeEnvFile, randomString } from "../util";
 import fs from 'fs';
 import compose from 'docker-compose';
 import { Container } from "./Container";
+import { ContainerEnvironmentVariable } from "../types/Container";
 
 export class ContainerManager {
     private _containers: Collection<string, Container>
@@ -36,7 +37,7 @@ export class ContainerManager {
         return this._containers.get(id)
     }
 
-    async createContainer(url: string, branch: string) {
+    async createContainer(url: string, branch: string, environmentVariables?: ContainerEnvironmentVariable[]) {
         if (!url) return
 
         const id = randomString(this._containerIdLength)
@@ -47,6 +48,7 @@ export class ContainerManager {
             path,
             repo: { url, branch }
         })
+        if (environmentVariables) cont.setEnvironmentVariables(environmentVariables)
         this._containers.set(id, cont)
 
         if (!fs.existsSync(path)) fs.mkdirSync(path)
@@ -76,6 +78,8 @@ export class ContainerManager {
     async buildContainer(id: string) {
         const container = this.getContainer(id)
         if (!container) return;
+
+        if (container.environmentVariables) makeEnvFile(container.path, container.environmentVariables)
 
         await compose.buildAll({ cwd: container.path }).catch((e) => console.error(e))
 
