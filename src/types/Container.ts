@@ -1,7 +1,8 @@
 export interface ContainerCreateOptions {
     id: string;
     repo: ContainerRepo;
-    path: string;
+    repoPath: string;
+    containerPath: string;
     startTime?: number;
     environmentVariables?: ContainerEnvironmentVariable[]
 }

@@ -37,21 +37,37 @@ export class ContainerManager {
         return this._containers.get(id)
     }
 
-    async createContainer(url: string, branch: string, environmentVariables?: ContainerEnvironmentVariable[]) {
+    async createContainer(
+
+        url: string,
+        branch: string,
+        environmentName: string,
+        basePath: string,
+        environmentVariables?: ContainerEnvironmentVariable[]) {
+
         if (!url) return
 
-        const id = randomString(this._containerIdLength)
-        const path = `${this._containersBasePath}/${id}`
+        const id = environmentName;
+
+        if (this.getContainer(id)) {
+            await this.stopContainer(id);
+            await this.pullContainer(id);
+            await this.buildContainer(id);
+            return await this.startContainer(id);
+        }
+
+        const repoPath = `${this._containersBasePath}/${id}`
 
         const cont = new Container({
             id,
-            path,
+            repoPath,
+            containerPath: basePath !== "/" ? basePath : "",
             repo: { url, branch }
         })
         if (environmentVariables) cont.setEnvironmentVariables(environmentVariables)
         this._containers.set(id, cont)
 
-        if (!fs.existsSync(path)) fs.mkdirSync(path)
+        if (!fs.existsSync(repoPath)) fs.mkdirSync(repoPath)
 
         await this.pullContainer(id);
         await this.stopContainer(id);
@@ -63,7 +79,7 @@ export class ContainerManager {
         const container = this.getContainer(id)
         if (!container) return;
 
-        const repo: SimpleGit = gitP(container.path);
+        const repo: SimpleGit = gitP(container.repoPath);
         const isRepo = await repo.checkIsRepo();
 
         if (!isRepo) {
