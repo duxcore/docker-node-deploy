@@ -4,17 +4,32 @@ import { SimpleGit } from "simple-git/promise";
 import { randomString } from "../util";
 import fs from 'fs';
 import compose from 'docker-compose';
+import { Container } from "./Container";
 
 export class ContainerManager {
-    private _containers: Collection<string, { id: string, url: string, branch: string, path: string, startTime: number }>
-    private _containersBasePath: string;
+    private _containers: Collection<string, Container>
+    private _containersBasePath = `${__dirname}/../../containers`;
     private _containerIdLength = 12;
+    private _runningContainers = 0;
 
     constructor() {
-        this._containersBasePath = `${__dirname}/../../containers`
-        this._containers = new Collection<string, { id: string, url: string, branch: string, path: string, startTime: number }>()
+        this._containers = new Collection<string, Container>()
 
         if (!fs.existsSync(this._containersBasePath)) fs.mkdirSync(this._containersBasePath)
+    }
+
+    get containersBasePath(): string { return this._containersBasePath }
+    get containerIdLength(): number { return this._containerIdLength }
+    get runningContainers(): number { return this._runningContainers }
+
+    setContainersBasePath(path: string): this {
+        this._containersBasePath = path;
+        return this
+    }
+
+    setContainerIdLength(length: number): this {
+        this._containerIdLength = length;
+        return this
     }
 
     getContainer(id: string) {
@@ -27,7 +42,12 @@ export class ContainerManager {
         const id = randomString(this._containerIdLength)
         const path = `${this._containersBasePath}/${id}`
 
-        this._containers.set(id, { id, url, branch, path, startTime: 0 })
+        const cont = new Container({
+            id,
+            path,
+            repo: { url, branch }
+        })
+        this._containers.set(id, cont)
 
         if (!fs.existsSync(path)) fs.mkdirSync(path)
 
@@ -46,43 +66,55 @@ export class ContainerManager {
 
         if (!isRepo) {
             await repo.init();
-            await repo.addRemote("origin", container.url ?? "");
+            await repo.addRemote("origin", container.repo.url ?? "");
         }
 
-        await repo.pull("origin", container.branch)
+        await repo.pull("origin", container.repo.branch)
         return container;
     }
 
     async buildContainer(id: string) {
         const container = this.getContainer(id)
         if (!container) return;
+
         await compose.buildAll({ cwd: container.path }).catch((e) => console.error(e))
+
         return container;
     }
 
     async stopContainer(id: string) {
         const container = this.getContainer(id)
         if (!container) return;
+
         await compose.down({ cwd: container.path }).catch((e) => console.error(e))
-        container.startTime = 0;
+
+        container.setStartTime(0)
         this._containers.set(id, container);
+        this._runningContainers = this._runningContainers - 1;
+
         return container;
     }
 
     async startContainer(id: string) {
         const container = this.getContainer(id)
         if (!container) return;
+
         await compose.upAll({ cwd: container.path }).catch((e) => console.error(e))
-        container.startTime = Date.now()
+
+        container.setStartTime(Date.now())
         this._containers.set(id, container);
+        this._runningContainers = this._runningContainers + 1;
+
         return container;
     }
 
     async deleteContainer(id: string) {
         const container = this.getContainer(id)
         if (!container) return;
+
         await this.stopContainer(id);
         fs.unlinkSync(container.path);
+
         return this._containers.delete(id);
     }
 }

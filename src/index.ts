@@ -1,8 +1,7 @@
-
 import { config } from 'dotenv';
 import http from "http";
 import express from 'express';
-import { ContainerManager } from './classes/containerManager';
+import { ContainerManager } from './classes/ContainerManager';
 
 config();
 
@@ -26,14 +25,14 @@ app.get('/container/:ID', async (req, res) => {
 })
 
 app.post('/container/:ID/stop', async (req, res) => {
-    await containerManager.stopContainer(req.params.ID)
-    res.send({ success: true })
+    const container = await containerManager.stopContainer(req.params.ID)
+    res.send({ success: true, container })
 })
 
 
 app.post('/container/:ID/start', async (req, res) => {
-    await containerManager.startContainer(req.params.ID)
-    res.send({ success: true })
+    const container = await containerManager.startContainer(req.params.ID)
+    res.send({ success: true, container })
 })
 
 
