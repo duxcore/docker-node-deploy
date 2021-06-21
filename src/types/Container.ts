@@ -3,13 +3,13 @@ import { Environment } from "../classes/Environment";
 export interface ContainerCreateOptions {
     id: string;
     environment: Environment;
-    basePath: string;
+    dir: string;
     startTime?: number;
     environmentVariables?: ContainerEnvironmentVariable[]
 }
 
 export interface RawContainerOptions {
-    basePath: string;
+    dir: string;
     envVars: ContainerEnvironmentVariable[]
 }
 

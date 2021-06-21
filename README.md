@@ -15,7 +15,7 @@ Payload:
   "envName": "ENVIRONMENT_NAME",
   "containers": [
     {
-      "basePath": "CONTAINER_BASE_PATH",
+      "dir": "CONTAINER_DIRECTORY",
       "envVars": [
         {
           "key": "ENV_VAR_KEY",

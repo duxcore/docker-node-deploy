@@ -58,7 +58,7 @@ export class Environment {
         await this.stopContainers();
 
         containers.forEach(async (options) => {
-            await this._containerManager.createContainer(this, options.basePath, options.envVars)
+            await this._containerManager.createContainer(this, options.dir, options.envVars)
         })
 
         return this;

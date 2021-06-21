@@ -6,15 +6,15 @@ import { RawContainerOptions } from "../types/Container";
 
 export class Environmentmanager {
     private _environments: Collection<string, Environment>
-    private _environmentsBasePath = `${__dirname}/../../environments`;
+    private _environmentsdir = `${__dirname}/../../environments`;
 
     constructor() {
         this._environments = new Collection<string, Environment>()
 
-        if (!fs.existsSync(this._environmentsBasePath)) fs.mkdirSync(this._environmentsBasePath)
+        if (!fs.existsSync(this._environmentsdir)) fs.mkdirSync(this._environmentsdir)
     }
 
-    get environmentsBasePath(): string { return this._environmentsBasePath }
+    get environmentsdir(): string { return this._environmentsdir }
     get environments(): Environment[] { return this._environments.array() }
 
     getEnvironment(name: string) {
@@ -34,7 +34,7 @@ export class Environmentmanager {
             return await env.startContainers();
         }
 
-        const path = `${this._environmentsBasePath}/${envName}`;
+        const path = `${this._environmentsdir}/${envName}`;
         const env = new Environment({
             name: envName,
             path,

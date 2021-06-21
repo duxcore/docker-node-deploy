@@ -8,7 +8,7 @@ export class Container {
 
     private _id: string;
     private _environment: Environment;
-    private _basePath: string;
+    private _dir: string;
     private _path: string;
     private _startTime = 0;
     private _environmentVariables?: ContainerEnvironmentVariable[];
@@ -16,8 +16,8 @@ export class Container {
     constructor(options: ContainerCreateOptions) {
         this._id = options.id;
         this._environment = options.environment;
-        this._basePath = options.basePath
-        this._path = this._environment.path + this._basePath
+        this._dir = options.dir
+        this._path = this._environment.path + this._dir
 
         if (options.startTime) this._startTime = options.startTime
         if (options.environmentVariables) this._environmentVariables = options.environmentVariables
@@ -25,7 +25,7 @@ export class Container {
 
     get id(): string { return this._id }
     get environment(): Environment { return this._environment }
-    get basePath(): string { return this._basePath }
+    get dir(): string { return this._dir }
     get path(): string { return this._path }
     get startTime(): number { return this._startTime }
     get environmentVariables(): ContainerEnvironmentVariable[] | undefined { return this._environmentVariables }
