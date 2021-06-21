@@ -46,11 +46,17 @@ export class Environment {
     }
 
     async startContainers() {
-
+        this._containerManager.containers.forEach(async (container) => {
+            await container.start();
+        })
     }
 
     async buildContainers(containers: RawContainerOptions[]) {
         await this.stopContainers();
+
+        containers.forEach(async (options) => {
+            await this._containerManager.createContainer(this, options.basePath, options.envVars)
+        })
     }
 
 }

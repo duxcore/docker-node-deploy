@@ -60,5 +60,3 @@ export class Container {
     }
 
 }
-
-// { id: string, url: string, branch: string, path: string, startTime: number }

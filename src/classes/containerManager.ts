@@ -30,8 +30,7 @@ export class ContainerManager {
             if (!cont) return
 
             await cont.stop()
-            await cont.build()
-            return await cont.start()
+            this._containers.delete(id);
         }
 
 

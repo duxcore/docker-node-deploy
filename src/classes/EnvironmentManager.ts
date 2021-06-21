@@ -30,7 +30,7 @@ export class Environmentmanager {
 
             await env.pull();
             await env.stopContainers()
-            await env.buildContainers(env.rawContainers);
+            await env.buildContainers(containers);
             return await env.startContainers();
         }
 
