@@ -41,7 +41,8 @@ export class Container {
     }
 
     async stop() {
-        await compose.down({ cwd: this.path }).catch((e) => console.error(e))
+        await compose.stop({ cwd: this.path }).catch((e) => console.error(e))
+        await compose.rm({ cwd: this.path }).catch((e) => console.error(e))
         this.setStartTime(0)
         return this;
     }
