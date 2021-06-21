@@ -2,6 +2,8 @@ import { config } from 'dotenv';
 import http from "http";
 import express from 'express';
 import { Environmentmanager } from './classes/EnvironmentManager';
+import { validateDeploySchema } from './schemas/deploy';
+import { validateStopSchema } from './schemas/stop';
 
 config();
 
@@ -16,25 +18,35 @@ app.use(express.json())
 
 app.post('/deploy', async (req, res) => {
     if (req.headers.authorization !== secret) res.send({ success: false, error: "Not Authorised" });
-    const environment = await environmentManager.createEnvironment(req.body.envName, req.body.url, req.body.branch, req.body.containers)
-    if (!environment) {
-        res.send({ success: false, error: "Failed to initialize environment" })
+    const data = validateDeploySchema(req.body);
+    if (!data) {
+        return res.send({ success: false, error: "Invalid deploy schema" });
     } else {
-        console.log(`Initialized environment ${environment.name}`);
-        res.send({ success: true, data: { name: environment.name } })
+        const environment = await environmentManager.createEnvironment(data.envName, data.url, data.branch, data.containers)
+        if (!environment) {
+            return res.send({ success: false, error: "Failed to initialize environment" })
+        } else {
+            console.log(`Initialized environment ${environment.name}`);
+            return res.send({ success: true, data: { name: environment.name } })
+        }
     }
 })
 
 app.post('/stop', async (req, res) => {
     if (req.headers.authorization !== secret) res.send({ success: false, error: "Not Authorised" });
-    const environment = environmentManager.getEnvironment(req.body.envName)
-    if (!environment) {
-        console.log(`Unable to locate ${req.body.envName}`);
-        res.send({ success: false, error: "Failed to locate environment" })
+    const data = validateStopSchema(req.body);
+    if (!data) {
+        return res.send({ success: false, error: "Invalid stop schema" });
     } else {
-        await environment.stopContainers();
-        console.log(`Terminated environment ${environment.name}`);
-        res.send({ success: true, data: { name: environment.name } })
+        const environment = environmentManager.getEnvironment(data.envName)
+        if (!environment) {
+            console.log(`Unable to locate ${data.envName}`);
+            return res.send({ success: false, error: "Failed to locate environment" })
+        } else {
+            await environment.stopContainers();
+            console.log(`Terminating environment ${environment.name}`);
+            return res.send({ success: true, data: { name: environment.name } })
+        }
     }
 })
 

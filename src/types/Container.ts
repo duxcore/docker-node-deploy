@@ -10,7 +10,7 @@ export interface ContainerCreateOptions {
 
 export interface RawContainerOptions {
     dir: string;
-    envVars: ContainerEnvironmentVariable[]
+    envVars?: ContainerEnvironmentVariable[]
 }
 
 export interface ContainerEnvironmentVariable {

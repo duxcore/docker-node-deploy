@@ -36,6 +36,8 @@ export class Environment {
         }
 
         await repo.pull("origin", this.repo.branch)
+
+        console.log(`Pulled environment ${this._name}`)
         return this;
     }
 

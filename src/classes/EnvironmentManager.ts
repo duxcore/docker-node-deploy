@@ -30,8 +30,7 @@ export class Environmentmanager {
 
             await env.pull();
             await env.stopContainers()
-            await env.buildContainers(containers);
-            return await env.startContainers();
+            return await env.buildContainers(containers);
         }
 
         const path = `${this._environmentsdir}/${envName}`;
@@ -46,7 +45,6 @@ export class Environmentmanager {
         if (!fs.existsSync(path)) fs.mkdirSync(path);
         await env.pull();
         await env.stopContainers()
-        await env.buildContainers(env.rawContainers);
-        return await env.startContainers();
+        return await env.buildContainers(env.rawContainers);
     }
 }
