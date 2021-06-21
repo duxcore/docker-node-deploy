@@ -21,6 +21,13 @@ app.post('/deploy', async (req, res) => {
     else res.send({ success: true, data: { name: environment.name } })
 })
 
+app.post('/stop', async (req, res) => {
+    if (req.headers.authorization !== secret) res.send({ success: false, error: "Not Authorised" });
+    const environment = environmentManager.getEnvironment(req.body.envName)
+    if (!environment) { res.send({ success: false, error: "Failed to locate environment" }) }
+    else { await environment.stopContainers(); res.send({ success: true, data: { name: environment.name } }) }
+})
+
 httpServer.listen(port, () => {
     console.log(`listening on http://localhost:${port}`);
 });
