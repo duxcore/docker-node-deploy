@@ -37,3 +37,28 @@ Returns:
   }
 }
 ```
+
+### Stop a environment
+
+```http
+POST http://localhost:6969/stop
+```
+
+Payload:
+
+```json
+{
+  "envName": "ENVIRONMENT_NAME"
+}
+```
+
+Returns:
+
+```json
+{
+  "success": true,
+  "data": {
+    "name": "ENVIRONMENT_NAME"
+  }
+}
+```
