@@ -13,11 +13,15 @@ Payload:
   "url": "GIT_REPO_URL",
   "branch": "REPO_BRANCH",
   "envName": "ENVIRONMENT_NAME",
-  "basePath": "CONTAINER_BASE_PATH",
-  "envVars": [
+  "containers": [
     {
-      "key": "ENV_VAR_KEY",
-      "value": "ENV_VAR_VALUE"
+      "basePath": "CONTAINER_BASE_PATH",
+      "envVars": [
+        {
+          "key": "ENV_VAR_KEY",
+          "value": "ENV_VAR_VALUE"
+        }
+      ]
     }
   ]
 }

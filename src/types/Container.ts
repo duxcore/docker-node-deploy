@@ -1,10 +1,16 @@
+import { Environment } from "../classes/Environment";
+
 export interface ContainerCreateOptions {
     id: string;
-    repo: ContainerRepo;
-    repoPath: string;
-    containerPath: string;
+    environment: Environment;
+    basePath: string;
     startTime?: number;
     environmentVariables?: ContainerEnvironmentVariable[]
+}
+
+export interface RawContainerOptions {
+    basePath: string;
+    envVars: ContainerEnvironmentVariable[]
 }
 
 export interface ContainerRepo {
