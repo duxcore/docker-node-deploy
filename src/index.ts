@@ -15,9 +15,9 @@ const environmentManager = new Environmentmanager();
 app.use(express.json())
 
 app.post('/deploy', async (req, res) => {
-    if (req.headers.authorization !== secret) res.send("Not Authorised");
+    if (req.headers.authorization !== secret) res.send({ success: false, error: "Not Authorised" });
     const environment = await environmentManager.createEnvironment(req.body.envName, req.body.url, req.body.branch, req.body.containers)
-    if (!environment) res.send({ success: false, data: { error: "Failed to initialize environment" } })
+    if (!environment) res.send({ success: false, error: "Failed to initialize environment" })
     else res.send({ success: true, data: { name: environment.name } })
 })
 
