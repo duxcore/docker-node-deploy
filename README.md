@@ -6,7 +6,7 @@ A [node.js](https://nodejs.org/) based deployment server that allows you to depl
 - Clone this repo
 - Install it's dependencies by running `yarn` in the root of the project
 - Build the deployment server using `yarn build`
-- Make sure to set environment variables in `.env` *(examle can be found in [`.env.example`](https://github.com/duxcore/docker-node-deploy/blob/main/.env.example))*
+- Make sure to set environment variables in `.env` *(example can be found in [`.env.example`](https://github.com/duxcore/docker-node-deploy/blob/main/.env.example))*
 - Run the deployment server using `yarn start`
 
 ### Methods
