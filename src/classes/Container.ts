@@ -1,5 +1,5 @@
 
-import { ContainerCreateOptions, ContainerEnvironmentVariable, ContainerRepo } from "../types/Container";
+import { ContainerCreateOptions, ContainerEnvironmentVariable } from "../types/Container";
 import { Environment } from "./Environment";
 import compose from 'docker-compose';
 import { makeEnvFile } from "../util";

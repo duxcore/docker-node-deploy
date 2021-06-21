@@ -13,11 +13,6 @@ export interface RawContainerOptions {
     envVars: ContainerEnvironmentVariable[]
 }
 
-export interface ContainerRepo {
-    url: string;
-    branch: string
-}
-
 export interface ContainerEnvironmentVariable {
     key: string;
     value: string;

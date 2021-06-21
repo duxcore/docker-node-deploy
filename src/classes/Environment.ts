@@ -43,12 +43,15 @@ export class Environment {
         this._containerManager.containers.forEach(async (container) => {
             await container.stop();
         })
+        return this;
     }
 
     async startContainers() {
         this._containerManager.containers.forEach(async (container) => {
             await container.start();
         })
+
+        return this;
     }
 
     async buildContainers(containers: RawContainerOptions[]) {
@@ -57,6 +60,8 @@ export class Environment {
         containers.forEach(async (options) => {
             await this._containerManager.createContainer(this, options.basePath, options.envVars)
         })
+
+        return this;
     }
 
 }
