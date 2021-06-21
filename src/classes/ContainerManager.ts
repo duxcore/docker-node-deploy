@@ -18,6 +18,10 @@ export class ContainerManager {
         return this._containers.get(id)
     }
 
+    deleteContainer(id: string) {
+        return this._containers.delete(id);
+    }
+
     async createContainer(
         environment: Environment,
         dir: string,
