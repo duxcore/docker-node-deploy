@@ -20,10 +20,10 @@ export class ContainerManager {
 
     async createContainer(
         environment: Environment,
-        basePath: string,
+        dir: string,
         environmentVariables?: ContainerEnvironmentVariable[]
     ) {
-        const id = `${environment.name}/${basePath}`;
+        const id = `${environment.name}/${dir}`;
 
         if (this.getContainer(id)) {
             const cont = this.getContainer(id)
@@ -37,7 +37,7 @@ export class ContainerManager {
         const cont = new Container({
             id,
             environment,
-            basePath
+            dir
         })
         if (environmentVariables) cont.setEnvironmentVariables(environmentVariables)
         this._containers.set(id, cont)
