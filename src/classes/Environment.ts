@@ -56,17 +56,8 @@ export class Environment {
         return this;
     }
 
-    async deleteContainers() {
-        this._containerManager.containers.forEach(async (container) => {
-            await container.stop();
-            this._containerManager.deleteContainer(container.id);
-        })
-
-        return this;
-    }
-
     async buildContainers(containers: RawContainerOptions[]) {
-        await this.deleteContainers();
+        await this.stopContainers();
 
         containers.forEach(async (options) => {
             await this._containerManager.createContainer(this, options.dir, options.envVars)
