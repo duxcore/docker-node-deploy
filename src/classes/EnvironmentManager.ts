@@ -29,7 +29,6 @@ export class Environmentmanager {
             if (!env) return;
 
             await env.pull();
-            await env.stopContainers()
             return await env.buildContainers(containers);
         }
 
@@ -44,7 +43,6 @@ export class Environmentmanager {
 
         if (!fs.existsSync(path)) fs.mkdirSync(path);
         await env.pull();
-        await env.stopContainers()
         return await env.buildContainers(env.rawContainers);
     }
 }

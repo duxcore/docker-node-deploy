@@ -32,7 +32,7 @@ app.post('/deploy', async (req, res) => {
     }
 })
 
-app.post('/stop', async (req, res) => {
+app.post('/terminate', async (req, res) => {
     if (req.headers.authorization !== secret) res.send({ success: false, error: "Not Authorised" });
     const data = validateStopSchema(req.body);
     if (!data) {

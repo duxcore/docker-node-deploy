@@ -10,7 +10,7 @@ A [node.js](https://nodejs.org/) based deployment server that allows you to depl
 - Run the deployment server using `yarn start`
 
 ### Methods
-#### Deploy a environment
+#### Deploy an environment
 
 ```http
 POST http://localhost:6969/deploy
@@ -48,10 +48,10 @@ Returns:
 }
 ```
 
-#### Stop a environment
+#### Terminate an environment
 
 ```http
-POST http://localhost:6969/stop
+POST http://localhost:6969/terminate
 ```
 
 Payload:
