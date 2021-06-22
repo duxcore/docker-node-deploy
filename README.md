@@ -3,8 +3,8 @@
 A [node.js](https://nodejs.org/) based deployment server that allows you to deploy and manage your [docker containers](https://www.docker.com/)
 
 ### Running it locally
-- Clone this repo
-- Install it's dependencies by running `yarn` in the root of the project
+- Clone this repo - `git clone https://github.com/duxcore/docker-node-deploy.git`
+- Install its dependencies by running `yarn` in the root of the project
 - Build the deployment server using `yarn build`
 - Make sure to set environment variables in `.env` *(example can be found in [`.env.example`](https://github.com/duxcore/docker-node-deploy/blob/main/.env.example))*
 - Run the deployment server using `yarn start`
