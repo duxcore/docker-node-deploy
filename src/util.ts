@@ -14,7 +14,7 @@ export function makeEnvFile(containerPath: string, environmentVariables: Contain
     let data = "";
     for (let index = 0; index < environmentVariables.length; index++) {
         const variable = environmentVariables[index];
-        data += `${variable.key}=${variable.value}`
+        data += `${variable.key}=${variable.value}\n`
     }
     fs.writeFileSync(envPath, data)
     return envPath
