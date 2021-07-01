@@ -1,4 +1,4 @@
-import { ContainerEnvironmentVariable } from "./types/Container";
+import { ContainerEnvironmentVariable, RawContainerOptions } from "./types/Container";
 import fs from 'fs';
 
 export function randomString(length: number) {
@@ -18,4 +18,15 @@ export function makeEnvFile(containerPath: string, environmentVariables: Contain
     }
     fs.writeFileSync(envPath, data)
     return envPath
+}
+
+export function checkContainerChanges(oldContainers: RawContainerOptions[], newContainers: RawContainerOptions[]) {
+    if (newContainers.length !== oldContainers.length) return true;
+
+    if (newContainers.map((container) => {
+        const index = newContainers.indexOf(container);
+        return container.dir == oldContainers[index].dir;
+    }).includes(false)) return true;
+
+    return false;
 }

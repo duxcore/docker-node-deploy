@@ -45,7 +45,7 @@ export class Container {
         await compose.rm({ cwd: this.path }).catch((e) => console.error(e))
         this.setStartTime(0);
 
-        console.log(`Stopped container ${this.id}`)
+        console.log(`Stopped container ${this.id} - ${Date.now()}`)
         return this;
     }
 
@@ -53,16 +53,15 @@ export class Container {
         await compose.upAll({ cwd: this.path }).catch((e) => console.error(e))
         this.setStartTime(Date.now())
 
-        console.log(`Started container ${this.id}`)
+        console.log(`Started container ${this.id} - ${Date.now()}`)
         return this;
     }
-
 
     async build() {
         if (this.environmentVariables) makeEnvFile(this.path, this.environmentVariables)
         await compose.buildAll({ cwd: this.path }).catch((e) => console.error(e))
 
-        console.log(`Built container ${this.id}`)
+        console.log(`Built container ${this.id} - ${Date.now()}`)
         return this;
     }
 

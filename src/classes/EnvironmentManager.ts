@@ -2,6 +2,7 @@ import Collection from "@discordjs/collection";
 import { Environment } from "./Environment";
 import fs from 'fs';
 import { RawContainerOptions } from "../types/Container";
+import { checkContainerChanges } from "../util";
 
 
 export class Environmentmanager {
@@ -29,7 +30,13 @@ export class Environmentmanager {
             if (!env) return;
 
             await env.pull();
-            return await env.buildContainers(containers);
+            const shouldRegenEnv = checkContainerChanges(env.rawContainers, containers)
+
+            if (shouldRegenEnv) return await env.createContainers(containers);
+
+            await env.updateContainerEnvs(containers);
+            await env.buildContainers();
+            return await env.restartContainers();
         }
 
         const path = `${this._environmentsdir}/${envName}`;
@@ -43,6 +50,6 @@ export class Environmentmanager {
 
         if (!fs.existsSync(path)) fs.mkdirSync(path);
         await env.pull();
-        return await env.buildContainers(env.rawContainers);
+        return await env.createContainers(env.rawContainers);
     }
 }

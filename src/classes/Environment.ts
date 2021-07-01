@@ -56,12 +56,41 @@ export class Environment {
         return this;
     }
 
-    async buildContainers(containers: RawContainerOptions[]) {
+    async restartContainers() {
+        this._containerManager.containers.forEach(async (container) => {
+            await container.stop();
+            await container.start();
+        })
+
+        return this;
+    }
+
+    async createContainers(containers: RawContainerOptions[]) {
         await this.stopContainers();
 
         containers.forEach(async (options) => {
             await this._containerManager.createContainer(this, options.dir, options.envVars)
         })
+
+        return this;
+    }
+
+    async updateContainerEnvs(containers: RawContainerOptions[]) {
+        containers.forEach((container) => {
+            const cont = this._containerManager.containers.find((c) => c.dir == container.dir)
+            if (!cont) return this;
+            if (!container.envVars) return this;
+            cont.setEnvironmentVariables(container.envVars);
+        })
+
+        return this;
+    }
+
+    async buildContainers() {
+        for (let index = 0; index < this._containerManager.containers.length; index++) {
+            const container = this._containerManager.containers[index];
+            await container.build();
+        }
 
         return this;
     }
