@@ -17,7 +17,7 @@ const environmentManager = new Environmentmanager();
 app.use(express.json())
 
 app.post('/deploy', async (req, res) => {
-    if (req.headers.authorization !== secret) res.send({ success: false, error: "Not Authorised" });
+    if (req.headers.authorization !== secret) return res.send({ success: false, error: "Not Authorised" });
     const data = validateDeploySchema(req.body);
     if (!data) {
         return res.send({ success: false, error: "Invalid deploy schema" });
@@ -33,7 +33,7 @@ app.post('/deploy', async (req, res) => {
 })
 
 app.post('/terminate', async (req, res) => {
-    if (req.headers.authorization !== secret) res.send({ success: false, error: "Not Authorised" });
+    if (req.headers.authorization !== secret) return res.send({ success: false, error: "Not Authorised" });
     const data = validateStopSchema(req.body);
     if (!data) {
         return res.send({ success: false, error: "Invalid stop schema" });
